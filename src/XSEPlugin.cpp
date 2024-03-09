@@ -53,6 +53,7 @@ extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_s
 	std::vector<std::tuple<int, int>> vers{ 
 		std::make_tuple(5, 97),
 		std::make_tuple(6, 640),
+		std::make_tuple(6, 318),
 		std::make_tuple(6, 1130) 
 	}; 
 
