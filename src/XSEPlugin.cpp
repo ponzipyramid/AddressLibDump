@@ -1,4 +1,23 @@
-#define DLLEXPORT __declspec(dllexport)
+#include "versionlibdb.h"
+
+bool DumpSpecificVersion(int minor, int patch)
+{
+	VersionDb db;
+
+	std::string ver{ std::format("1.{}.{}.0", minor, patch) };
+
+	// Try to load database of version 1.5.62.0 regardless of running executable version.
+	if (!db.Load(1, minor, patch, 0)) {
+		logger::error("Failed to load database for {}!", ver);
+		return false;
+	}
+
+	// Write out a file called offsets-1.5.62.0.txt where each line is the ID and offset.
+	db.Dump(std::format("offsets-{}.txt", ver));
+	logger::info("Dumped offsets for {}", ver);
+	return true;
+}
+
 
 void InitializeLog([[maybe_unused]] spdlog::level::level_enum a_level = spdlog::level::info)
 {
@@ -29,6 +48,7 @@ extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_s
 	InitializeLog();
 	logger::info("Loaded plugin {} {}", Plugin::NAME, Plugin::VERSION.string());
 	SKSE::Init(a_skse);
+	DumpSpecificVersion(6, 640);
 	return true;
 }
 
