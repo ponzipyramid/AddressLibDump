@@ -48,7 +48,18 @@ extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_s
 	InitializeLog();
 	logger::info("Loaded plugin {} {}", Plugin::NAME, Plugin::VERSION.string());
 	SKSE::Init(a_skse);
-	DumpSpecificVersion(6, 640);
+
+
+	std::vector<std::tuple<int, int>> vers{ 
+		std::make_tuple(5, 97),
+		std::make_tuple(6, 640),
+		std::make_tuple(6, 1130) 
+	}; 
+
+	for (const auto& ver : vers) {
+		std::apply(DumpSpecificVersion, ver);
+	}
+
 	return true;
 }
 
